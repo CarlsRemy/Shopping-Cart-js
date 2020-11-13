@@ -1,0 +1,149 @@
+.control-sidebar {
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  right: -65px;
+  width: 5%;
+  top: 0%;
+  padding-top: 4%;
+  border-bottom: 1.3px solid black;
+  border-left: 1.3px solid black;
+  border-right: 1.3px solid black;
+  background-color: white;
+  -webkit-transition: right 0.3s ease-in-out;
+  -o-transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out;
+}
+
+.sidebar-open {
+  width: 50%;
+  right: 0%;
+}
+
+div.navbar {
+  z-index: 1000;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 3.4rem;
+  border: 1px;
+  background-color: black;
+}
+
+.sidebar-body {
+  position: fixed;
+  top: 0%;
+}
+
+.sidebar-header {
+  position: relative;
+  margin: 5px 10px 5px 10px;
+  top: 0%;
+}
+
+.sidebar-header h1 {
+  text-align: center;
+  display: inline-block;
+  width: 85%;
+  margin: 0;
+}
+
+.sidebar-header button {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  margin: 5px 10px 5px 10px;
+}
+
+.sidebar-header .close {
+  color: #f00;
+  text-shadow: 0 3px 0 #000;
+}
+
+.sidebar-header .clear {
+  color: #f00;
+  text-shadow: 0 3px 0 #000;
+}
+
+.clear:not(:disabled):not(.disabled):focus,
+.clear:not(:disabled):not(.disabled):hover {
+  opacity: 0.75;
+  outline: none;
+}
+
+.close:not(:disabled):not(.disabled):focus,
+.close:not(:disabled):not(.disabled):hover {
+  opacity: 0.75;
+  outline: none;
+}
+
+.sidebar-contents {
+  margin: 0px 10px 5px 10px;
+}
+
+.sidebar-contents .Scroll {
+  min-height: 510px;
+  max-height: 520px;
+  overflow-y: auto;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.sidebar-contents #Contents {
+  padding-top: 5px;
+}
+
+.sidebar-contents #Contents .Cart-Art {
+  height: 90px;
+  display: flex;
+  padding: 6px 10px;
+  border: 1px solid;
+  border-radius: 20px;
+  margin-bottom: 5px;
+}
+
+div.Detail {
+  width: 70%;
+}
+
+div.input-group {
+  width: 168px !important;
+}
+
+input.item-count {
+  width: 100px !important;
+}
+
+div.Totals {
+  width: 40%;
+  padding-right: 15px;
+}
+
+div.Totals h4 {
+  text-align: right;
+  margin-bottom: 2px;
+}
+
+.sidebar-contents .delete-item {
+  color: #b3b3b3;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  float: right;
+  font-size: 1.4em;
+  height: min-content;
+}
+
+.delete-item:not(:disabled):not(.disabled):focus,
+.delete-item:not(:disabled):not(.disabled):hover {
+  outline: none;
+  color: #f00;
+}
+
+/*# sourceMappingURL=main.css.map */

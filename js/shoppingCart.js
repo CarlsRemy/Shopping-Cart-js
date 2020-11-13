@@ -1,130 +1,146 @@
 // ***************************************************
 // Shopping Cart functions
 
-var shoppingCart = (function () {
+var ShoppingCart  = (function () {
     // Private methods and properties
-    var cart = [];
+    var Cart = [];
 
-    function Item(name, price, count) {
-        this.name = name
-        this.price = price
-        this.count = count
+    function Item(Code, Name, Price, Count,Offer,OF_Count,OF_Price) {
+        this.Code = Code;
+        this.Name = Name;
+        this.Price = Price;
+        this.Count = Count;
+        this.Offer = Offer;
+        this.OF_Count = OF_Count;
+        this.OF_Price = OF_Price;
     }
 
-    function saveCart() {
-        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    function Offer(Count,Value,Price){
+        if(Count<Value){
+            Oferta = Count;
+        }
+        else
+        { 
+            if(Count % Value === 0){
+                Value = Count/Value;
+                Oferta = Value * Price;
+            }
+            else{
+                Residue = Count % Value;
+                Value = Math.floor(Count / Value) + Residue;
+                Oferta = Value * Price;
+            }
+        }
+        return Oferta
     }
 
-    function loadCart() {
-        cart = JSON.parse(localStorage.getItem("shoppingCart"));
-        if (cart === null) {
-            cart = []
+    function SaveCart() {
+        localStorage.setItem("shoppingCart", JSON.stringify(Cart));
+    }
+
+    function LoadCart() {
+        Cart = JSON.parse(localStorage.getItem("shoppingCart"));
+        if (Cart === null) {
+            Cart = [];
         }
     }
 
-    loadCart();
-
-
-
+    LoadCart();
     // Public methods and properties
-    var obj = {};
+    var Obj = {};
 
-    obj.addItemToCart = function (name, price, count) {
-        for (var i in cart) {
-            if (cart[i].name === name) {
-                cart[i].count += count;
-                saveCart();
+    Obj.AddItem = function (Code, Name, Price, Count,Offer='N',OF_Count=0,OF_Price=0) {
+        for (var i in Cart) {
+            if (Cart[i].Code === Code) {
+                Cart[i].Count += Count;
+                SaveCart();
                 return;
             }
         }
-
-        console.log("addItemToCart:", name, price, count);
-
-        var item = new Item(name, price, count);
-        cart.push(item);
-        saveCart();
+        var item = new Item(Code, Name, Price, Count,Offer,OF_Count,OF_Price);
+        Cart.push(item);
+        SaveCart();
     };
 
-    obj.setCountForItem = function (name, count) {
-        for (var i in cart) {
-            if (cart[i].name === name) {
-                cart[i].count = count;
-                break;
-            }
-        }
-        saveCart();
-    };
-
-
-    obj.removeItemFromCart = function (name) { // Removes one item
-        for (var i in cart) {
-            if (cart[i].name === name) { // "3" === 3 false
-                cart[i].count--; // cart[i].count --
-                if (cart[i].count === 0) {
-                    cart.splice(i, 1);
+    Obj.SetCount = function (Code, Count) {
+        for (var i in Cart) {
+            if (Cart[i].Code === Code) {
+                Cart[i].Count = Count;
+                if (Cart[i].Count == 0) {
+                    Cart.splice(i, 1);
                 }
                 break;
             }
         }
-        saveCart();
+        SaveCart();
     };
 
-
-    obj.removeItemFromCartAll = function (name) { // removes all item name
-        for (var i in cart) {
-            if (cart[i].name === name) {
-                cart.splice(i, 1);
+    Obj.SubtractItem = function (Code) {
+        for (var i in Cart) {
+            if (Cart[i].Code === Code) {
+                Cart[i].Count--;
+                if (Cart[i].Count == 0) {
+                    Cart.splice(i, 1);
+                }
                 break;
             }
         }
-        saveCart();
+        SaveCart();
     };
 
-
-    obj.clearCart = function () {
-        cart = [];
-        saveCart();
-    }
-
-
-    obj.countCart = function () { // -> return total count
-        var totalCount = 0;
-        for (var i in cart) {
-            totalCount += cart[i].count;
+    Obj.RemoveItem = function (Code) {
+        for (var  i in Cart) {
+            if (Cart[i].Code === Code) {
+                Cart.splice(i, 1);
+                break;
+            }
         }
-
-        return totalCount;
+        SaveCart();
     };
 
-    obj.totalCart = function () { // -> return total cost
-        var totalCost = 0;
-        for (var i in cart) {
-            totalCost += cart[i].price * cart[i].count;
+    Obj.Clear = function () {
+        Cart = [];
+        SaveCart();
+    };
+
+    Obj.CountCart = function () {
+        var TotalCount = 0;
+        for (var i in Cart) {
+            TotalCount += Cart[i].Count;
         }
-        return totalCost.toFixed(2);
+        return TotalCount;
     };
 
-    obj.listCart = function () { // -> array of Items
-        var cartCopy = [];
-        console.log("Listing cart");
-        console.log(cart);
-        for (var i in cart) {
-            console.log(i);
-            var item = cart[i];
+    Obj.TotalCart = function () {
+        var TotalPrice = 0;
+        for (var i in Cart) {
+            TotalPrice += Cart[i].Price * Cart[i].Count;
+        }
+        return TotalPrice.toFixed(2);
+    };
+
+    Obj.ListCart = function () {
+        var CartCopy = [];
+        for (var i in Cart) {
+            var item = Cart[i];
             var itemCopy = {};
+            var Total =0;
+
             for (var p in item) {
                 itemCopy[p] = item[p];
             }
-            itemCopy.total = (item.price * item.count).toFixed(2);
-            cartCopy.push(itemCopy);
+
+            if(item.Offer=='S'){
+                Total = Offer(item.Count,item.OF_Count,item.OF_Price);
+            }else{
+                Total = item.Count;
+            }
+           
+            itemCopy.Total = (item.Price * Total).toFixed(2);
+            CartCopy.push(itemCopy);
         }
-        return cartCopy;
+        return CartCopy;
     };
-
     // ----------------------------
-    return obj;
+    return Obj;
 })();
-
-
-
-

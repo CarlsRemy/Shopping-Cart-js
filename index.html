@@ -1,110 +1,238 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    </head>
-    <body>
-        <h1>Shopping Cart</h1>
+  <head>
+    <title></title>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/Main.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <button id="Cart" type="button" onclick="Open()" class="btn btn-primary">
+        <i id="icoArt" class="fa fa-shopping-cart"></i> Pedidos
+        <span id="Count-Cart" class="badge badge-light"></span>
+        <span class="sr-only">unread messages</span>
+      </button>
+    </div>
+    <div id="Shopping-Cart" class="control-sidebar sidebar-open">
+      <!--<div class="sidebar-body">-->
+      <div class="sidebar-header">
+        <h1>Ventas</h1>
 
-        <div>
-            <ul>
-                <li><a class="add-to-cart" href="#" data-name="Apple" data-price="1.22">Apple $1.22</a></li>
-                <li><a class="add-to-cart" href="#" data-name="Banana" data-price="1.33">Banana $1.33</a></li>
-                <li><a class="add-to-cart" href="#" data-name="Shoe" data-price="22.33">Shoe $22.33</a></li>
-                <li><a class="add-to-cart" href="#" data-name="Frisbee" data-price="5.22">Frisbee $5.22</a></li>
-            </ul>
-            <button id="clear-cart">Clear Cart</button>
+        <button
+          type="button"
+          class="close"
+          onclick="Close()"
+          aria-label="Close"
+        >
+          <i class="fa fa-arrow-left"></i>
+        </button>
+
+        <button
+          type="button"
+          class="clear"
+          onclick="ClearCart()"
+          aria-label="Borrar"
+        >
+          <i class="fa fa-trash-alt"></i>
+        </button>
+      </div>
+      <div class="sidebar-contents">
+        <div class="Scroll">
+          <div id="Contents"></div>
         </div>
-
-
-        <div>
-            <ul id="show-cart">
-                <li>???????</li>
-            </ul>
-            <div>You have <span id="count-cart">X</span> items in your cart</div>
-            <div>Total Cart:$<span id="total-cart"></span></div>
+        <div class="col-total" style="padding: 0; text-align: right">
+          <h5 id="Total-Cart"></h5>
+          <h5>200.50</h5>
+          <h5>50,000.00</h5>
         </div>
+      </div>
+      <!-- </div>-->
+    </div>
 
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 style="text-align: center">Shopping Cart</h1>
+          <ul>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00001"
+                data-name="Apple"
+                data-price="1.22"
+                >Apple $1.22</a
+              >
+            </li>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00002"
+                data-name="Banana"
+                data-price="1.33"
+                >Banana $1.33</a
+              >
+            </li>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00003"
+                data-name="Shoe"
+                data-price="22.33"
+                >Shoe $22.33</a
+              >
+            </li>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00004"
+                data-name="Frisbee"
+                data-price="5.22"
+                >Frisbee $5.22</a
+              >
+            </li>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00005"
+                data-name="Aguacate"
+                data-price="35"
+                >Aguacate $35</a
+              >
+            </li>
+            <li>
+              <a
+                class="add-to-cart"
+                href="#"
+                data-codigo="00006"
+                data-name="Mango"
+                data-price="50"
+                >Mango $50</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="js/shoppingCart.js"></script>
+    <script>
+      $(".add-to-cart").click(function (e) {
+        e.preventDefault();
+        var codigo = $(this).attr("data-codigo");
+        var name = $(this).attr("data-name");
+        var price = Number($(this).attr("data-price"));
 
+        //shoppingcart.additem(codigo,name, price, 1)
+        ShoppingCart.AddItem(codigo, name, price, 1);
+        displayCart();
+      });
 
-        <script src="js/shoppingCart.js"></script>
+      function ClearCart() {
+        ShoppingCart.Clear();
+        displayCart();
+      }
 
-        <script>
+      function displayCart() {
+        var cartArray = ShoppingCart.ListCart();
+        var output = "";
 
-            $(".add-to-cart").click(function(event){
-                event.preventDefault();
-                var name = $(this).attr("data-name");
-                var price = Number($(this).attr("data-price"));
+        for (var i in cartArray) {
+          output +=
+            '<div class="Cart-Art">' +
+            '<div class="Detail">' +
+            "<h4>" +
+            cartArray[i].Name +
+            "</h4>" +
+            //+'</div>'
+            // +'<div class="Count-Items">'
+            '<div class="input-group">' +
+            "<input class='form-control item-count' type='number' data-codigo='" +
+            cartArray[i].Code +
+            "' value='" +
+            cartArray[i].Count +
+            "' min='1' max='100' >" +
+            '<div class="input-group-prepend" id="button-addon3">' +
+            "<button class='btn btn-outline-secondary subtract-item' type='button' " +
+            "data-codigo='" +
+            cartArray[i].Code +
+            "'>-</button>" +
+            "<button class='btn btn-outline-secondary plus-item' type='button' " +
+            "data-codigo='" +
+            cartArray[i].Code +
+            "'>+</button>" +
+            "</div>" +
+            //+ '</div>'
+            "</div>" +
+            "</div>" +
+            '<div class="Totals">' +
+            "<h4>" +
+            cartArray[i].Price +
+            "</h4>" +
+            "<h4>" +
+            cartArray[i].Total +
+            "</h4>" +
+            "</div>" +
+            "<button type='button' class='delete-item'" +
+            "data-codigo='" +
+            cartArray[i].Code +
+            "'>" +
+            '<i class="fa fa-trash-alt fa-x2"></i>' +
+            "</button>" +
+            "</div>";
+        }
 
-                shoppingCart.addItemToCart(name, price, 1);
-                displayCart();
-            });
+        $("#Contents").html(output);
+        $("#Count-Cart").html(ShoppingCart.CountCart());
+        $("#Total-Cart").html(ShoppingCart.TotalCart());
+      }
 
-            $("#clear-cart").click(function(event){
-                shoppingCart.clearCart();
-                displayCart();
-            });
+      $(".sidebar-contents").on("click", ".delete-item", function (event) {
+        var Code = $(this).attr("data-codigo");
+        ShoppingCart.RemoveItem(Code);
+        displayCart();
+      });
 
-            function displayCart() {
-                var cartArray = shoppingCart.listCart();
-                console.log(cartArray);
-                var output = "";
+      $(".sidebar-contents").on("click", ".subtract-item", function (event) {
+        var Code = $(this).attr("data-codigo");
+        ShoppingCart.SubtractItem(Code);
+        displayCart();
+      });
 
-                for (var i in cartArray) {
-                    output += "<li>"
-                        +cartArray[i].name
-                        +" <input class='item-count' type='number' data-name='"
-                        +cartArray[i].name
-                        +"' value='"+cartArray[i].count+"' >"
-                        +" x "+cartArray[i].price
-                        +" = "+cartArray[i].total
-                        +" <button class='plus-item' data-name='"
-                        +cartArray[i].name+"'>+</button>"
-                        +" <button class='subtract-item' data-name='"
-                        +cartArray[i].name+"'>-</button>"
-                        +" <button class='delete-item' data-name='"
-                        +cartArray[i].name+"'>X</button>"
-                        +"</li>";
-                }
+      $(".sidebar-contents").on("click", ".plus-item", function (event) {
+        var Code = $(this).attr("data-codigo");
+        ShoppingCart.AddItem(Code, "", 0, 1);
+        displayCart();
+      });
 
-                $("#show-cart").html(output);
-                $("#count-cart").html( shoppingCart.countCart() );
-                $("#total-cart").html( shoppingCart.totalCart() );
-            }
+      $(".sidebar-contents").on("change", ".item-count", function (event) {
+        var Code = $(this).attr("data-codigo");
+        var count = Number($(this).val());
+        ShoppingCart.SetCount(Code, count);
+        displayCart();
+      });
 
-            $("#show-cart").on("click", ".delete-item", function(event){
-                var name = $(this).attr("data-name");
-                shoppingCart.removeItemFromCartAll(name);
-                displayCart();
-            });
+      displayCart();
+    </script>
 
-            $("#show-cart").on("click", ".subtract-item", function(event){
-                var name = $(this).attr("data-name");
-                shoppingCart.removeItemFromCart(name);
-                displayCart();
-            });
+    <script src="./js/home.js"></script>
+  </body>
 
-            $("#show-cart").on("click", ".plus-item", function(event){
-                var name = $(this).attr("data-name");
-                shoppingCart.addItemToCart(name, 0, 1);
-                displayCart();
-            });
+  
 
-            $("#show-cart").on("change", ".item-count", function(event){
-                var name = $(this).attr("data-name");
-                var count = Number($(this).val());
-                shoppingCart.setCountForItem(name, count);
-                displayCart();
-            });
-
-
-            displayCart();
-
-        </script>
-    </body>
 </html>
-
-
-
-
